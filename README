@@ -1,0 +1,1 @@
+load the mode, it hooks file loading, so when you load a .class file you get the javap output. syntax hilighting of the javap output is a work in progress.
