@@ -1,4 +1,6 @@
- ;;; javap.el --- Javap major mode
+;;; javap.el --- Javap major mode
+;;; Version: 8
+;;; URL: http://github.com/hiredman/javap-mode
 
 ;; Copyright (C) 2011 Kevin Downey
 
@@ -108,3 +110,4 @@
 
 (provide 'javap-mode)
 
+;;; javap.el ends here
