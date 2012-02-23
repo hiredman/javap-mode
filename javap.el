@@ -25,57 +25,62 @@
 (defconst javap-font-lock-keywords
   (eval-when-compile
     `(
+      ("line [0-9]+: [0-9]+" . font-lock-comment-face)
+      ("\\<[a-zA-Z]+\\.[a-zA-Z0-9._]*[A-Z]+[a-zA-Z0-9/.$]*\\>" . font-lock-type-face) ;; borrowed from clojure-mode
+      ("\\<[a-zA-Z]+/[a-zA-Z0-9/_]*[A-Z]+[a-zA-Z0-9/$]*\\>" . font-lock-type-face)
+      ("[0-9]+:" . font-lock-comment-face)
+      ("\\(#.+\\)" . font-lock-comment-face)
+      ("\\(\\w\\|_\\)+(" . font-lock-preprocessor-face)
+      (")" . font-lock-preprocessor-face)
+      ("\\(invoke\\w+\\)" . font-lock-function-name-face)
+      (,(regexp-opt '("boolean" "int" "void" "char"))
+       . font-lock-type-face)
       (,(regexp-opt '("Exception table"
                       "LocalVariableTable"
-                      "LineNumberTable"))
-       0 font-lock-warning-face)
-      
-      ("\\<[a-zA-Z]+\\.[a-zA-Z0-9._]*[A-Z]+[a-zA-Z0-9/.$]*\\>" 0 font-lock-type-face) ;; borrowed from clojure-mode
-      ("\\<[a-zA-Z]+/[a-zA-Z0-9/_]*[A-Z]+[a-zA-Z0-9/$]*\\>" 0
-       font-lock-type-face)
-      ("invoke\\w+" 0 font-lock-function-name-face)
-      ("\\(\\w\\|_\\)+(" 0 font-lock-preprocessor-face)
-      (")" 0 font-lock-preprocessor-face)
-      (,(regexp-opt '("boolean" "int" "void" "char"))
-       0 font-lock-type-face)
+                      "LineNumberTable")) . font-lock-warning-face)
 
-      (".load_\\w+" 0 font-lock-keyword-face)
-      (".load " 0 font-lock-keyword-face)
-      (".store_\\w+" 0 font-lock-keyword-face)
-      (".const_\\w+" 0 font-lock-keyword-face)
-      (".return" 0 font-lock-keyword-face)
-      ("if_icmpne" 0 font-lock-keyword-face)
-      (".add" 0 font-lock-keyword-face)
+      (".load_\\w+" . font-lock-keyword-face)
 
-      (,(concat (regexp-opt '("i" "l" "d" "f" "c" "b" "s"))
-                "2"
-                (regexp-opt '("i" "l" "d" "f" "c" "b" "s")))
-       0 font-lock-keyword-face)
-      
+      (".load" . font-lock-keyword-face)
+
+      (".store_\\w+" . font-lock-keyword-face)
+
+      (".const_[0-9]+" . font-lock-keyword-face)
+
+      (".return" . font-lock-keyword-face)
+
       (,(regexp-opt
          '("ifne" "athrow" "new" "dup" "aastore" "anewarray" "ifnull" "ifeq" "ifnonnull"
            "getstatic" "putfield" "getfield" "checkcast" "astore" "aload" "ldc" "goto" "putstatic"
            "pop" "instanceof" "ldc_w" "sipush" "bipush" "aaload" "bastore" "baload" "arraylength"
            "castore" "saload" "lastore" "daload" "dastore" "ifle" "istore" "lookupswitch" "iinc"
            "if_icmpge" "isub" "if_icmpgt" "if_acmpne" "iflt" "if_icmplt" "if_icmple" "dcmpg"
-           "dcmpl" "ldc2_w" "lcmp" "fcmpg" "fcmpl" "ifge" "jsr" "ifgt" "ret"))
-       0 font-lock-keyword-face)
+           "dcmpl" "ldc2_w" "lcmp" "fcmpg" "fcmpl" "ifge" "jsr" "ifgt" "ret" "aconst_null" "swap"
+           "if_acmpeq" "dup_x2"))
+       . font-lock-keyword-face)
+
+      (".add" . font-lock-keyword-face)
 
       (,(regexp-opt
          '("public" "static" "final" "volatile" ";" "transient" "class" "extends" "implements"
-           "synchronized" "protected" "private" "abstract" "interface" "Code:"))
-       0 font-lock-comment-face)
-      ("line [0-9]+:" 0 font-lock-comment-face)
-      ("[0-9]+:" 0 font-lock-comment-face)
+           "synchronized" "protected" "private" "abstract" "interface" "Code:" "throws"))
+       . font-lock-comment-face)
+      ;;      ("\\(\\w+\\)" . font-lock-keyword-face)
       ))
   "Default expressions to highlight in javap mode.")
+
+(defvar javap-mode-syntax-table′ (make-syntax-table)
+  "Syntax table for use in javap-mode.")
 
  ;;;###autoload
 (define-derived-mode javap-mode fundamental-mode "javap"
   "A major mode for viewing javap files."
-  :syntax-table javap-mode-syntax-table
+  :syntax-table javap-mode-syntax-table′
+  (modify-syntax-entry ?_ "w" javap-mode-syntax-table′)
+  (modify-syntax-entry ?# "<" javap-mode-syntax-table′)
+  (modify-syntax-entry ?\n ">" javap-mode-syntax-table′)
   (set (make-local-variable 'comment-start) "#")
-  (set (make-local-variable 'comment-start-skip) "#.+")
+  (set (make-local-variable 'comment-start-skip) "#")
   (set (make-local-variable 'font-lock-defaults) '(javap-font-lock-keywords)))
 
 (defun javap-buffer ()
