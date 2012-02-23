@@ -1,4 +1,4 @@
-;;; javap.el --- Javap major mode
+;;; javap-mode.el --- Javap major mode
 ;;; Version: 8
 ;;; URL: http://github.com/hiredman/javap-mode
 
@@ -116,4 +116,4 @@
 
 (provide 'javap-mode)
 
-;;; javap.el ends here
+;;; javap-mode.el ends here
