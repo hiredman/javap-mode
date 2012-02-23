@@ -101,8 +101,9 @@
           (switch-to-buffer new-buf)
         (let ((new-buf (get-buffer-create new-b-name)))
           (progn
-            (switch-to-buffer-other-window new-buf)
-            (call-process "javap" nil new-buf nil "-c" "-l" "-package" "-protected" "-private" "-classpath" "." b-name)
+            (switch-to-buffer new-buf)
+            (call-process "javap" nil new-buf nil "-c" "-l" "-classpath" "." b-name)
+            ;; (call-process "javap" nil new-buf nil "-c" "-l" "-package" "-protected" "-private" "-classpath" "." b-name)
             (setq buffer-read-only 't)
             (set-window-point (selected-window) 0))))
       (javap-mode)
