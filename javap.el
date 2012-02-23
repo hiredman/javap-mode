@@ -98,7 +98,7 @@
                            (kill-buffer old-buf)))))
     (progn
       (if new-buf
-          (switch-to-buffer-other-window new-buf)
+          (switch-to-buffer new-buf)
         (let ((new-buf (get-buffer-create new-b-name)))
           (progn
             (switch-to-buffer-other-window new-buf)
