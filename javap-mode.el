@@ -22,6 +22,11 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ;; THE SOFTWARE.
 
+;;; Code:
+
+(eval-when-compile
+  (require 'cl))
+
 (defconst javap-font-lock-keywords
   (eval-when-compile
     `(
