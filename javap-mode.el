@@ -72,7 +72,7 @@
 (defvar javap-mode-syntax-table′ (make-syntax-table)
   "Syntax table for use in javap-mode.")
 
- ;;;###autoload
+;;;###autoload
 (define-derived-mode javap-mode fundamental-mode "javap"
   "A major mode for viewing javap files."
   :syntax-table javap-mode-syntax-table′
@@ -83,6 +83,7 @@
   (set (make-local-variable 'comment-start-skip) "#")
   (set (make-local-variable 'font-lock-defaults) '(javap-font-lock-keywords)))
 
+;;;###autoload
 (defun javap-buffer ()
   "run javap on contents of buffer"
   (interactive)
@@ -109,6 +110,7 @@
       (javap-mode)
       (local-set-key [(q)] done))))
 
+;;;###autoload
 (add-hook 'find-file-hook
           (lambda (&rest args)
             (if (string= ".class" (substring (buffer-file-name) -6 nil))
